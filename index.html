@@ -3,15 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mats & Mia – 60-årspresent</title>
+  <title>Grattis på 60-årsdagen!</title>
   <style>
     :root {
+      --accent: #ffcc00;
+      --accent-soft: rgba(255, 204, 0, 0.3);
       --bg: #050814;
-      --bg-soft: #0a1023;
-      --accent: #f6c453;
-      --accent-strong: #ffcc00;
-      --text-soft: rgba(255, 255, 255, 0.78);
-      --border-subtle: rgba(255, 255, 255, 0.12);
+      --card-bg: rgba(5, 8, 20, 0.92);
     }
 
     * {
@@ -21,15 +19,26 @@
     body {
       margin: 0;
       min-height: 100vh;
+      /* Bild som bakgrund */
       background:
-        radial-gradient(circle at top, #242d60 0%, #050814 45%, #000 100%);
+        linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.75),
+          rgba(0, 0, 0, 0.92)
+        ),
+        url("uggla.avif");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+
       color: #fff;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
         sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 24px;
       overflow: hidden;
     }
 
@@ -43,12 +52,13 @@
       opacity: 0.9;
     }
 
-    .overlay-gradient {
+    .spotlight {
       position: fixed;
       inset: 0;
       background:
-        radial-gradient(circle at 10% 0%, rgba(255, 255, 255, 0.16), transparent 55%),
-        radial-gradient(circle at 90% 100%, rgba(255, 204, 0, 0.18), transparent 60%);
+        radial-gradient(circle at 50% -20%, rgba(255,255,255,0.18), transparent 55%),
+        radial-gradient(circle at 10% 110%, rgba(116, 185, 255, 0.18), transparent 55%),
+        radial-gradient(circle at 90% 110%, rgba(255, 204, 0, 0.18), transparent 55%);
       mix-blend-mode: screen;
       opacity: 0.9;
       z-index: 1;
@@ -58,178 +68,199 @@
     .wrapper {
       position: relative;
       z-index: 2;
-      max-width: 1100px;
+      max-width: 1040px;
       width: 100%;
     }
 
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2.5fr);
-      gap: 36px;
-      padding: 34px 30px 30px;
-      border-radius: 28px;
-      background: linear-gradient(135deg, rgba(10,16,35,0.96), rgba(5,8,20,0.9));
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow:
-        0 26px 60px rgba(0, 0, 0, 0.85),
-        0 0 60px rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(18px);
+    .ticket {
       position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.4fr);
+      gap: 28px;
+      padding: 30px 26px 26px;
+      border-radius: 26px;
+      background: var(--card-bg);
+      box-shadow:
+        0 0 45px rgba(0, 0, 0, 0.85),
+        0 0 60px rgba(0, 0, 0, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(14px);
       overflow: hidden;
     }
 
-    /* Stor 60 i bakgrunden */
-    .layout::before {
-      content: "60";
+    .ticket::before {
+      content: "";
       position: absolute;
-      right: -20px;
-      top: 8px;
-      font-size: 9rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      color: rgba(255, 255, 255, 0.03);
+      inset: -2px;
+      border-radius: 28px;
+      background: conic-gradient(
+        from 200deg,
+        rgba(255, 204, 0, 0.2),
+        rgba(255, 255, 255, 0.08),
+        rgba(88, 101, 242, 0.3),
+        rgba(255, 204, 0, 0.32),
+        rgba(255, 255, 255, 0.1)
+      );
+      opacity: 0.8;
       z-index: -1;
-      pointer-events: none;
+      filter: blur(6px);
+      animation: borderGlow 9s linear infinite;
     }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.28);
-      font-size: 0.78rem;
+    @keyframes borderGlow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .ticket::after {
+      content: "";
+      position: absolute;
+      top: 18px;
+      bottom: 18px;
+      right: 35%;
+      width: 1px;
+      border-right: 1px dashed rgba(255, 255, 255, 0.18);
+      opacity: 0.9;
+    }
+
+    .ribbon {
+      position: absolute;
+      top: 14px;
+      left: -80px;
+      padding: 6px 90px;
       text-transform: uppercase;
       letter-spacing: 0.16em;
-      color: var(--text-soft);
-      background: radial-gradient(circle at 0 0, rgba(255,255,255,0.22), transparent 65%);
-      margin-bottom: 14px;
-    }
-
-    .badge-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--accent-strong);
-      box-shadow: 0 0 12px rgba(255, 204, 0, 0.5);
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: linear-gradient(120deg, #ffcc00, #ff9d00);
+      color: #000;
+      transform: rotate(-7deg);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
     }
 
     .left {
       text-align: left;
-      padding-right: 8px;
+      padding-right: 12px;
     }
 
     .right {
       text-align: left;
-      padding-left: 8px;
-      border-left: 1px solid rgba(255,255,255,0.12);
+      padding-left: 20px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 10px;
+      opacity: 0.95;
+      background: radial-gradient(circle at 0 0, rgba(255,255,255,0.18), transparent 70%);
+    }
+
+    .tag-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent-soft);
     }
 
     h1 {
-      margin: 0 0 10px;
-      font-size: clamp(2.5rem, 4.2vw, 3.4rem);
-      line-height: 1.02;
-      letter-spacing: 0.02em;
-      background: linear-gradient(120deg, #ffffff, #ffe4a3, #ffcc00, #ffffff);
-      background-size: 220% auto;
+      margin: 0 0 8px;
+      font-size: clamp(2.3rem, 4vw, 3rem);
+      line-height: 1.08;
+      background: linear-gradient(
+        120deg,
+        #ffffff,
+        #ffe08a,
+        #ffcc00,
+        #ffffff
+      );
+      background-size: 200% auto;
       color: transparent;
       -webkit-background-clip: text;
       background-clip: text;
-      animation: headingFlow 10s ease-in-out infinite;
+      animation: titleGlow 7s ease-in-out infinite;
     }
 
-    @keyframes headingFlow {
+    @keyframes titleGlow {
       0%, 100% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
     }
 
     .subtitle {
       font-size: 1.05rem;
-      margin: 0 0 24px;
-      color: var(--text-soft);
-    }
-
-    .highlight {
-      color: var(--accent-strong);
-      font-weight: 600;
-    }
-
-    .section-label {
-      margin-top: 6px;
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      color: rgba(255,255,255,0.7);
-    }
-
-    .details {
-      margin-top: 8px;
-      font-size: 0.98rem;
-      line-height: 1.7;
-      color: var(--text-soft);
-    }
-
-    .details strong {
-      color: var(--accent-strong);
-      font-weight: 600;
-    }
-
-    a.link {
-      color: var(--accent-strong);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(246, 196, 83, 0.5);
-      padding-bottom: 1px;
-    }
-
-    a.link:hover {
-      border-bottom-color: rgba(246, 196, 83, 0.9);
+      margin-bottom: 18px;
       opacity: 0.95;
     }
 
-    .when-card {
-      margin-top: 4px;
-      padding: 14px 16px 12px;
-      border-radius: 20px;
-      background: radial-gradient(circle at top left, rgba(255,255,255,0.09), transparent 65%);
-      border: 1px solid var(--border-subtle);
-      box-shadow: 0 16px 32px rgba(0,0,0,0.7);
+    .highlight {
+      font-weight: 600;
+      color: var(--accent);
     }
 
-    .when-title {
-      font-size: 0.85rem;
+    .section-title {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      letter-spacing: 0.16em;
-      opacity: 0.85;
-      margin-bottom: 8px;
+      opacity: 0.9;
+    }
+
+    .details {
+      margin-top: 6px;
+      font-size: 0.98rem;
+      line-height: 1.7;
+    }
+
+    .details strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .link {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    .when-box {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 65%);
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 0 18px rgba(0,0,0,0.7);
     }
 
     .when-row {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
+      font-size: 0.96rem;
       padding: 4px 0;
-      gap: 12px;
     }
 
     .when-label {
-      font-size: 0.8rem;
+      opacity: 0.85;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
-      opacity: 0.8;
+      letter-spacing: 0.11em;
+      font-size: 0.78rem;
     }
 
     .when-value {
-      font-size: 0.96rem;
       font-weight: 600;
-      color: var(--accent-strong);
-      text-align: right;
+      color: var(--accent);
     }
 
     .footer {
       margin-top: 18px;
-      font-size: 0.92rem;
-      color: var(--text-soft);
+      font-size: 0.9rem;
+      opacity: 0.9;
     }
 
     .names {
@@ -239,103 +270,103 @@
     }
 
     .note {
-      margin-top: 16px;
+      margin-top: 14px;
       font-size: 0.86rem;
-      color: var(--text-soft);
-      padding: 9px 11px;
-      border-radius: 12px;
-      border: 1px dashed rgba(255,255,255,0.38);
-      background: rgba(0,0,0,0.4);
+      opacity: 0.92;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px dashed rgba(255,255,255,0.35);
+      background: rgba(0,0,0,0.45);
     }
 
     .note strong {
       color: var(--accent);
     }
 
-    .corner-orb {
+    .glow-orb {
       position: absolute;
-      width: 220px;
-      height: 220px;
       border-radius: 50%;
       filter: blur(22px);
       opacity: 0.7;
-      pointer-events: none;
       z-index: -1;
+      pointer-events: none;
     }
 
-    .corner-orb.orb-left {
-      top: -60px;
-      left: -40px;
-      background: radial-gradient(circle, rgba(255,255,255,0.22), transparent 70%);
+    .glow-orb.orb1 {
+      width: 180px;
+      height: 180px;
+      top: -40px;
+      left: 10%;
+      background: radial-gradient(circle, var(--accent-soft), transparent 70%);
     }
 
-    .corner-orb.orb-right {
-      bottom: -80px;
-      right: -40px;
-      background: radial-gradient(circle, rgba(255,204,0,0.32), transparent 70%);
+    .glow-orb.orb2 {
+      width: 200px;
+      height: 200px;
+      bottom: -60px;
+      right: 5%;
+      background: radial-gradient(circle, rgba(137, 196, 244, 0.4), transparent 70%);
     }
 
-    @media (max-width: 900px) {
-      .layout {
+    @media (max-width: 820px) {
+      .ticket {
         grid-template-columns: 1fr;
-        gap: 26px;
-        padding: 26px 20px 22px;
+        padding: 26px 18px 20px;
       }
+
+      .ticket::after {
+        display: none;
+      }
+
       .right {
-        border-left: none;
-        border-top: 1px solid rgba(255,255,255,0.14);
         padding-left: 0;
-        padding-top: 18px;
+        border-top: 1px dashed rgba(255,255,255,0.22);
+        margin-top: 14px;
+        padding-top: 14px;
       }
-      .layout::before {
-        font-size: 6.5rem;
-        top: -6px;
-        right: -8px;
+
+      .ribbon {
+        top: 10px;
+        left: -60px;
+        padding-inline: 70px;
       }
     }
 
-    @media (max-width: 520px) {
+    @media (max-width: 480px) {
       body {
-        padding: 14px;
-      }
-      h1 {
-        font-size: 2.2rem;
+        padding: 16px;
       }
       .subtitle {
-        font-size: 0.96rem;
+        font-size: 0.98rem;
       }
       .details {
-        font-size: 0.94rem;
-      }
-      .when-value {
-        font-size: 0.9rem;
+        font-size: 0.95rem;
       }
     }
   </style>
 </head>
 <body>
   <canvas id="fireworks"></canvas>
-  <div class="overlay-gradient"></div>
+  <div class="spotlight"></div>
 
   <div class="wrapper">
-    <div class="layout">
-      <div class="corner-orb orb-left"></div>
-      <div class="corner-orb orb-right"></div>
+    <div class="ticket">
+      <div class="glow-orb orb1"></div>
+      <div class="glow-orb orb2"></div>
+
+      <div class="ribbon">Mats &amp; Mia 60-årspresent</div>
 
       <div class="left">
-        <div class="badge">
-          <span class="badge-dot"></span>
+        <div class="tag">
+          <span class="tag-dot"></span>
           Mats &amp; Mia 60-årspresent
         </div>
-
         <h1>Grattis på 60-årsdagen!</h1>
-
         <p class="subtitle">
           <span class="highlight">Vi firar er med en oförglömlig kväll</span><br />
         </p>
 
-        <p class="section-label">Kom till Stockholm och se</p>
-
+        <p class="section-title">Kom till Stockholm och se</p>
         <p class="details">
           <a href="https://showtic.se/forestallningar/magnus-uggla/stockholm"
              class="link"
@@ -353,19 +384,16 @@
       </div>
 
       <div class="right">
-        <div class="when-card">
-          <div class="when-title">När &amp; var</div>
-
+        <p class="section-title">När &amp; var</p>
+        <div class="when-box">
           <div class="when-row">
             <div class="when-label">Datum</div>
             <div class="when-value">13 december 2025</div>
           </div>
-
           <div class="when-row">
             <div class="when-label">Plats</div>
             <div class="when-value">Göta Lejon</div>
           </div>
-
           <div class="when-row">
             <div class="when-label">Tid</div>
             <div class="when-value">Fördrink 16:30</div>
@@ -376,7 +404,6 @@
           Tack för alla år, alla skratt och alla minnen.<br />
           Nu skapar vi nya!
         </p>
-
         <p class="names">
           Grattiskramar från<br />
           <strong>Anders, Åsa, Anna, Ann-Sofie &amp; Jonas</strong>
@@ -403,11 +430,11 @@
       constructor() {
         this.x = Math.random() * w;
         this.y = h + 10;
-        this.targetY = Math.random() * h * 0.45 + 40;
+        this.targetY = Math.random() * h * 0.4 + 40;
         this.speed = 4 + Math.random() * 3;
         this.particles = [];
         this.exploded = false;
-        this.color = `hsl(${Math.random() * 360}, 85%, 62%)`;
+        this.color = `hsl(${Math.random() * 360}, 90%, 60%)`;
       }
 
       update() {
@@ -473,7 +500,7 @@
       ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
       ctx.fillRect(0, 0, w, h);
 
-      if (Math.random() < 0.055) {
+      if (Math.random() < 0.06) {
         fireworks.push(new Firework());
       }
 
