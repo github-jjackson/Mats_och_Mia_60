@@ -7,7 +7,9 @@
   <style>
     :root {
       --accent: #ffcc00;
+      --accent-soft: rgba(255, 204, 0, 0.3);
       --bg: #050814;
+      --card-bg: rgba(5, 8, 20, 0.92);
     }
 
     * {
@@ -17,16 +19,15 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background: radial-gradient(circle at top, #1b2550 0, #000 55%, #000 100%);
+      background:
+        radial-gradient(circle at top, #2a3575 0, #050814 40%, #000 100%);
       color: #fff;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
         sans-serif;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      padding: 20px;
+      padding: 24px;
       overflow: hidden;
     }
 
@@ -39,42 +40,154 @@
       z-index: 0;
     }
 
-    .card {
-      position: relative;
+    .spotlight {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% -20%, rgba(255,255,255,0.18), transparent 55%),
+        radial-gradient(circle at 10% 110%, rgba(116, 185, 255, 0.18), transparent 55%),
+        radial-gradient(circle at 90% 110%, rgba(255, 204, 0, 0.18), transparent 55%);
+      mix-blend-mode: screen;
+      opacity: 0.9;
       z-index: 1;
-      max-width: 720px;
-      padding: 28px 22px 26px;
-      border-radius: 20px;
-      background: rgba(5, 8, 20, 0.86);
+      pointer-events: none;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 2;
+      max-width: 1040px;
+      width: 100%;
+    }
+
+    .ticket {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.4fr);
+      gap: 28px;
+      padding: 30px 26px 26px;
+      border-radius: 26px;
+      background: var(--card-bg);
       box-shadow:
-        0 0 40px rgba(0, 0, 0, 0.8),
-        0 0 40px rgba(255, 204, 0, 0.12);
+        0 0 45px rgba(0, 0, 0, 0.85),
+        0 0 60px rgba(0, 0, 0, 0.9);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
+      overflow: hidden;
+    }
+
+    .ticket::before {
+      /* glödande ram */
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 28px;
+      background: conic-gradient(
+        from 200deg,
+        rgba(255, 204, 0, 0.2),
+        rgba(255, 255, 255, 0.08),
+        rgba(88, 101, 242, 0.3),
+        rgba(255, 204, 0, 0.32),
+        rgba(255, 255, 255, 0.1)
+      );
+      opacity: 0.8;
+      z-index: -1;
+      filter: blur(6px);
+      animation: borderGlow 9s linear infinite;
+    }
+
+    @keyframes borderGlow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .ticket::after {
+      /* perforerad “biljettkant” */
+      content: "";
+      position: absolute;
+      top: 18px;
+      bottom: 18px;
+      right: 35%;
+      width: 1px;
+      border-right: 1px dashed rgba(255, 255, 255, 0.18);
+      opacity: 0.9;
+    }
+
+    .ribbon {
+      position: absolute;
+      top: 14px;
+      left: -80px;
+      padding: 6px 90px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: linear-gradient(120deg, #ffcc00, #ff9d00);
+      color: #000;
+      transform: rotate(-7deg);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+    }
+
+    .left {
+      text-align: left;
+      padding-right: 12px;
+    }
+
+    .right {
+      text-align: left;
+      padding-left: 20px;
     }
 
     .tag {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       padding: 4px 12px;
       border-radius: 999px;
       border: 1px solid rgba(255, 255, 255, 0.25);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.14em;
       margin-bottom: 10px;
-      opacity: 0.9;
+      opacity: 0.95;
+      background: radial-gradient(circle at 0 0, rgba(255,255,255,0.18), transparent 70%);
+    }
+
+    .tag-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent-soft);
     }
 
     h1 {
       margin: 0 0 8px;
-      font-size: clamp(2.2rem, 4vw, 2.8rem);
-      line-height: 1.1;
+      font-size: clamp(2.3rem, 4vw, 3rem);
+      line-height: 1.08;
+      background: linear-gradient(
+        120deg,
+        #ffffff,
+        #ffe08a,
+        #ffcc00,
+        #ffffff
+      );
+      background-size: 200% auto;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: titleGlow 7s ease-in-out infinite;
+    }
+
+    @keyframes titleGlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
 
     .subtitle {
       font-size: 1.05rem;
       margin-bottom: 18px;
-      opacity: 0.9;
+      opacity: 0.95;
     }
 
     .highlight {
@@ -83,17 +196,17 @@
     }
 
     .section-title {
-      margin-top: 16px;
-      font-size: 0.95rem;
-      letter-spacing: 0.14em;
+      margin-top: 10px;
+      font-size: 0.9rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      opacity: 0.85;
+      opacity: 0.9;
     }
 
     .details {
       margin-top: 6px;
-      font-size: 1rem;
-      line-height: 1.6;
+      font-size: 0.98rem;
+      line-height: 1.7;
     }
 
     .details strong {
@@ -101,44 +214,120 @@
       font-weight: 600;
     }
 
-    .footer {
-      margin-top: 22px;
-      font-size: 0.9rem;
+    .link {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    .when-box {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 65%);
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 0 18px rgba(0,0,0,0.7);
+    }
+
+    .when-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.96rem;
+      padding: 4px 0;
+    }
+
+    .when-label {
       opacity: 0.85;
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      font-size: 0.78rem;
+    }
+
+    .when-value {
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .footer {
+      margin-top: 18px;
+      font-size: 0.9rem;
+      opacity: 0.9;
     }
 
     .names {
-      margin-top: 6px;
-      font-size: 1rem;
+      margin-top: 8px;
+      font-size: 0.98rem;
       font-weight: 500;
     }
 
-    .sparkle {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #fff 0, var(--accent) 60%, transparent 100%);
-      opacity: 0.7;
-      filter: blur(0.5px);
-      animation: float 8s linear infinite;
+    .note {
+      margin-top: 14px;
+      font-size: 0.86rem;
+      opacity: 0.92;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px dashed rgba(255,255,255,0.35);
+      background: rgba(0,0,0,0.45);
     }
 
-    .sparkle:nth-child(1) { top: -10px; left: 12%; animation-delay: -1s; }
-    .sparkle:nth-child(2) { top: 18%; right: -10px; animation-delay: -3s; }
-    .sparkle:nth-child(3) { bottom: -10px; left: 18%; animation-delay: -5s; }
-    .sparkle:nth-child(4) { bottom: 10%; right: -10px; animation-delay: -7s; }
+    .note strong {
+      color: var(--accent);
+    }
 
-    @keyframes float {
-      0% { transform: translateY(0) scale(1); opacity: 0.2; }
-      30% { opacity: 0.9; }
-      100% { transform: translateY(-60px) scale(0.4); opacity: 0; }
+    .glow-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(22px);
+      opacity: 0.7;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .glow-orb.orb1 {
+      width: 180px;
+      height: 180px;
+      top: -40px;
+      left: 10%;
+      background: radial-gradient(circle, var(--accent-soft), transparent 70%);
+    }
+
+    .glow-orb.orb2 {
+      width: 200px;
+      height: 200px;
+      bottom: -60px;
+      right: 5%;
+      background: radial-gradient(circle, rgba(137, 196, 244, 0.4), transparent 70%);
+    }
+
+    @media (max-width: 820px) {
+      .ticket {
+        grid-template-columns: 1fr;
+        padding: 26px 18px 20px;
+      }
+
+      .ticket::after {
+        display: none;
+      }
+
+      .right {
+        padding-left: 0;
+        border-top: 1px dashed rgba(255,255,255,0.22);
+        margin-top: 14px;
+        padding-top: 14px;
+      }
+
+      .ribbon {
+        top: 10px;
+        left: -60px;
+        padding-inline: 70px;
+      }
     }
 
     @media (max-width: 480px) {
-      .card {
-        padding: 22px 16px 20px;
-        border-radius: 16px;
+      body {
+        padding: 16px;
+      }
+      h1 {
+        font-size: 2.1rem;
       }
       .subtitle {
         font-size: 0.98rem;
@@ -151,55 +340,74 @@
 </head>
 <body>
   <canvas id="fireworks"></canvas>
+  <div class="spotlight"></div>
 
-  <div class="card">
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
+  <div class="wrapper">
+    <div class="ticket">
+      <div class="glow-orb orb1"></div>
+      <div class="glow-orb orb2"></div>
 
-<div class="tag">Mats & Mia 60-årspresent</div>
-<h1>Grattis på 60-årsdagen!</h1>
-<p class="subtitle">
-  <span class="highlight">Vi firar er med en oförglömlig kväll</span><br />
+      <div class="ribbon">Mats &amp; Mia 60-årspresent</div>
 
-</p>
+      <div class="left">
+        <div class="tag">
+          <span class="tag-dot"></span>
+          Mats &amp; Mia 60-årspresent
+        </div>
+        <h1>Grattis på 60-årsdagen!</h1>
+        <p class="subtitle">
+          <span class="highlight">Vi firar er med en oförglömlig kväll</span><br />
+        </p>
 
-<p class="section-title">KOM TILL STOCKHOLM OCH SE</p>
-<p class="details">
-  <a href="https://showtic.se/forestallningar/magnus-uggla/stockholm"
-     style="color: var(--accent); text-decoration: underline;"
-     target="_blank">
-     <strong>Magnus Uggla - 50 år på tronen</strong>
-  </a>!<br />
-  Vi firar att ni båda fyllt 60 år med musik, humor och nostalgi.<br />
-  Efter föreställningen går vi och äter middag på 
-  <a href="https://www.restauranghimlen.se/"
-     style="color: var(--accent); text-decoration: underline;"
-     target="_blank">
-     Himlen
-  </a>.
-</p>
+        <p class="section-title">Kom till Stockholm och se</p>
+        <p class="details">
+          <a href="https://showtic.se/forestallningar/magnus-uggla/stockholm"
+             class="link"
+             target="_blank">
+             <strong>Magnus Uggla - 50 år på tronen</strong>
+          </a>!<br />
+          Vi firar att ni båda fyllt 60 år med musik, humor och nostalgi.<br />
+          Efter föreställningen går vi och äter middag på
+          <a href="https://www.restauranghimlen.se/"
+             class="link"
+             target="_blank">
+             Himlen
+          </a>.
+        </p>
+      </div>
 
+      <div class="right">
+        <p class="section-title">När &amp; var</p>
+        <div class="when-box">
+          <div class="when-row">
+            <div class="when-label">Datum</div>
+            <div class="when-value">13 december 2025</div>
+          </div>
+          <div class="when-row">
+            <div class="when-label">Plats</div>
+            <div class="when-value">Göta Lejon</div>
+          </div>
+          <div class="when-row">
+            <div class="when-label">Tid</div>
+            <div class="when-value">Fördrink 16:30</div>
+          </div>
+        </div>
 
+        <p class="footer">
+          Tack för alla år, alla skratt och alla minnen.<br />
+          Nu skapar vi nya!
+        </p>
+        <p class="names">
+          Grattiskramar från<br />
+          <strong>Anders, Åsa, Anna, Ann-Sofie &amp; Jonas</strong>
+        </p>
 
-    <!-- Fyll i detaljer här -->
-    <p class="section-title">När & var</p>
-    <p class="details">
-      Datum: <strong>13 december 2025</strong><br />
-      Plats: <strong>Göta Lejon</strong><br />
-      Tid: <strong>Fördrink 16:30</strong>
-    </p>
-
-    <p class="footer">
-      Tack för alla år, alla skratt och alla minnen.<br />
-      Nu skapar vi nya!
-    </p>
-    <p class="names">
-      Grattiskramar från<br />
-      <strong>Anders, Åsa, Anna, Ann-Sofie & Jonas</strong>
-    </p>
-    OBS. Boka boende. Möjlighet finns för övernattning hos Ann-Sofie & Jonas om så önskas
+        <p class="note">
+          <strong>OBS.</strong> Boka boende. Möjlighet finns för övernattning hos
+          Ann-Sofie &amp; Jonas om så önskas.
+        </p>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -292,7 +500,6 @@
       fireworks.forEach(f => f.update());
       fireworks.forEach(f => f.draw());
 
-      // rensa gamla
       if (fireworks.length > 40) {
         fireworks.splice(0, fireworks.length - 40);
       }
@@ -309,10 +516,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
