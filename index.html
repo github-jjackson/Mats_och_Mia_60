@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grattis på 60-årsdagen!</title>
+  <style>
+    :root {
+      --accent: #ffcc00;
+      --bg: #050814;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1b2550 0, #000 55%, #000 100%);
+      color: #fff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      padding: 28px 22px 26px;
+      border-radius: 20px;
+      background: rgba(5, 8, 20, 0.86);
+      box-shadow:
+        0 0 40px rgba(0, 0, 0, 0.8),
+        0 0 40px rgba(255, 204, 0, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 10px;
+      opacity: 0.9;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(2.2rem, 4vw, 2.8rem);
+      line-height: 1.1;
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      margin-bottom: 18px;
+      opacity: 0.9;
+    }
+
+    .highlight {
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .section-title {
+      margin-top: 16px;
+      font-size: 0.95rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+
+    .details {
+      margin-top: 6px;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .details strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .footer {
+      margin-top: 22px;
+      font-size: 0.9rem;
+      opacity: 0.85;
+    }
+
+    .names {
+      margin-top: 6px;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff 0, var(--accent) 60%, transparent 100%);
+      opacity: 0.7;
+      filter: blur(0.5px);
+      animation: float 8s linear infinite;
+    }
+
+    .sparkle:nth-child(1) { top: -10px; left: 12%; animation-delay: -1s; }
+    .sparkle:nth-child(2) { top: 18%; right: -10px; animation-delay: -3s; }
+    .sparkle:nth-child(3) { bottom: -10px; left: 18%; animation-delay: -5s; }
+    .sparkle:nth-child(4) { bottom: 10%; right: -10px; animation-delay: -7s; }
+
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); opacity: 0.2; }
+      30% { opacity: 0.9; }
+      100% { transform: translateY(-60px) scale(0.4); opacity: 0; }
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 22px 16px 20px;
+        border-radius: 16px;
+      }
+      .subtitle {
+        font-size: 0.98rem;
+      }
+      .details {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="fireworks"></canvas>
+
+  <div class="card">
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+
+    <div class="tag">60-årspresent</div>
+    <h1>Grattis på 60-årsdagen!</h1>
+    <p class="subtitle">
+      <span class="highlight">Vi firar dig med en oförglömlig kväll</span><br />
+      tillsammans med Magnus Uggla.
+    </p>
+
+    <p class="section-title">Det här ska vi göra</p>
+    <p class="details">
+      Du får biljetter till en föreställning med <strong>Magnus Uggla</strong>!<br />
+      Vi går tillsammans och firar din 60-årsdag med musik, humor och nostalgi.
+    </p>
+
+    <!-- Fyll i detaljer här -->
+    <p class="section-title">När & var</p>
+    <p class="details">
+      Datum: <strong>XX månad 2025</strong><br />
+      Plats: <strong>[stad / arena]</strong><br />
+      Tid: <strong>[klockslag]</strong>
+    </p>
+
+    <p class="footer">
+      Tack för alla år, alla skratt och alla minnen.<br />
+      Nu skapar vi nya!
+    </p>
+    <p class="names">
+      Med kärlek från<br />
+      <strong>[dina namn här]</strong>
+    </p>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("fireworks");
+    const ctx = canvas.getContext("2d");
+
+    let w = canvas.width = window.innerWidth;
+    let h = canvas.height = window.innerHeight;
+
+    const fireworks = [];
+
+    class Firework {
+      constructor() {
+        this.x = Math.random() * w;
+        this.y = h + 10;
+        this.targetY = Math.random() * h * 0.4 + 40;
+        this.speed = 4 + Math.random() * 3;
+        this.particles = [];
+        this.exploded = false;
+        this.color = `hsl(${Math.random() * 360}, 90%, 60%)`;
+      }
+
+      update() {
+        if (!this.exploded) {
+          this.y -= this.speed;
+          if (this.y <= this.targetY) {
+            this.explode();
+          }
+        }
+        this.particles.forEach(p => p.update());
+        this.particles = this.particles.filter(p => p.alpha > 0);
+      }
+
+      explode() {
+        this.exploded = true;
+        const count = 70;
+        for (let i = 0; i < count; i++) {
+          this.particles.push(new Particle(this.x, this.y, this.color));
+        }
+      }
+
+      draw() {
+        if (!this.exploded) {
+          ctx.fillStyle = this.color;
+          ctx.fillRect(this.x - 1, this.y - 8, 2, 8);
+        }
+        this.particles.forEach(p => p.draw());
+      }
+    }
+
+    class Particle {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.angle = Math.random() * Math.PI * 2;
+        this.speed = Math.random() * 5 + 1;
+        this.alpha = 1;
+        this.decay = 0.015 + Math.random() * 0.02;
+        this.color = color;
+        this.gravity = 0.03;
+      }
+
+      update() {
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed + this.gravity;
+        this.speed *= 0.97;
+        this.alpha -= this.decay;
+      }
+
+      draw() {
+        if (this.alpha <= 0) return;
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    function loop() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
+      ctx.fillRect(0, 0, w, h);
+
+      if (Math.random() < 0.06) {
+        fireworks.push(new Firework());
+      }
+
+      fireworks.forEach(f => f.update());
+      fireworks.forEach(f => f.draw());
+
+      // rensa gamla
+      if (fireworks.length > 40) {
+        fireworks.splice(0, fireworks.length - 40);
+      }
+
+      requestAnimationFrame(loop);
+    }
+
+    window.addEventListener("resize", () => {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    });
+
+    loop();
+  </script>
+</body>
+</html>
