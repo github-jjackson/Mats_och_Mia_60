@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grattis – Mobilversion</title>
+  <style>
+    :root {
+      --accent: #ffcc00;
+      --accent-soft: rgba(255, 204, 0, 0.3);
+      --bg: #050814;
+      --card-bg: rgba(5, 8, 20, 0.92);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.45),
+          rgba(0, 0, 0, 0.80)
+        ),
+        url("uggla.avif");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+
+      color: #fff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow: hidden;
+    }
+
+    canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.9;
+    }
+
+    .spotlight {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% -20%, rgba(255,255,255,0.18), transparent 55%),
+        radial-gradient(circle at 10% 110%, rgba(116, 185, 255, 0.18), transparent 55%),
+        radial-gradient(circle at 90% 110%, rgba(255, 204, 0, 0.18), transparent 55%);
+      mix-blend-mode: screen;
+      opacity: 0.9;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 2;
+      max-width: 1040px;
+      width: 100%;
+    }
+
+    .ticket {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.4fr);
+      gap: 28px;
+      padding: 30px 26px 26px;
+      border-radius: 26px;
+      background: var(--card-bg);
+      box-shadow:
+        0 0 45px rgba(0, 0, 0, 0.85),
+        0 0 60px rgba(0, 0, 0, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(14px);
+      overflow: hidden;
+    }
+
+    .ticket::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 28px;
+      background: conic-gradient(
+        from 200deg,
+        rgba(255, 204, 0, 0.2),
+        rgba(255, 255, 255, 0.08),
+        rgba(88, 101, 242, 0.3),
+        rgba(255, 204, 0, 0.32),
+        rgba(255, 255, 255, 0.1)
+      );
+      opacity: 0.8;
+      z-index: -1;
+      filter: blur(6px);
+      animation: borderGlow 9s linear infinite;
+    }
+
+    @keyframes borderGlow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .ticket::after {
+      content: "";
+      position: absolute;
+      top: 18px;
+      bottom: 18px;
+      right: 35%;
+      width: 1px;
+      border-right: 1px dashed rgba(255, 255, 255, 0.18);
+      opacity: 0.9;
+    }
+
+    .ribbon {
+      position: absolute;
+      top: 14px;
+      left: -80px;
+      padding: 6px 90px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: linear-gradient(120deg, #ffcc00, #ff9d00);
+      color: #000;
+      transform: rotate(-7deg);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+    }
+
+    .left {
+      text-align: left;
+      padding-right: 12px;
+    }
+
+    .right {
+      text-align: left;
+      padding-left: 20px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 10px;
+      opacity: 0.95;
+      background: radial-gradient(circle at 0 0, rgba(255,255,255,0.18), transparent 70%);
+    }
+
+    .tag-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent-soft);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(2.3rem, 4vw, 3rem);
+      line-height: 1.08;
+      background: linear-gradient(
+        120deg,
+        #ffffff,
+        #ffe08a,
+        #ffcc00,
+        #ffffff
+      );
+      background-size: 200% auto;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: titleGlow 7s ease-in-out infinite;
+    }
+
+    @keyframes titleGlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      margin-bottom: 18px;
+      opacity: 0.95;
+    }
+
+    .highlight {
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .section-title {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+
+    .details {
+      margin-top: 6px;
+      font-size: 0.98rem;
+      line-height: 1.7;
+    }
+
+    .details strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .link {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    .when-box {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 65%);
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 0 18px rgba(0,0,0,0.7);
+    }
+
+    .when-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.96rem;
+      padding: 4px 0;
+    }
+
+    .when-label {
+      opacity: 0.85;
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      font-size: 0.78rem;
+    }
+
+    .when-value {
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .footer {
+      margin-top: 18px;
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .names {
+      margin-top: 8px;
+      font-size: 0.98rem;
+      font-weight: 500;
+    }
+
+    .note {
+      margin-top: 14px;
+      font-size: 0.86rem;
+      opacity: 0.92;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px dashed rgba(255,255,255,0.35);
+      background: rgba(0,0,0,0.45);
+    }
+
+    .note strong {
+      color: var(--accent);
+    }
+
+    .glow-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(22px);
+      opacity: 0.7;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .glow-orb.orb1 {
+      width: 180px;
+      height: 180px;
+      top: -40px;
+      left: 10%;
+      background: radial-gradient(circle, var(--accent-soft), transparent 70%);
+    }
+
+    .glow-orb.orb2 {
+      width: 200px;
+      height: 200px;
+      bottom: -60px;
+      right: 5%;
+      background: radial-gradient(circle, rgba(137, 196, 244, 0.4), transparent 70%);
+    }
+
+    /* MOBILANPASSNING */
+    @media (max-width: 720px) {
+      body {
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: 16px 12px 24px;
+      }
+
+      .wrapper {
+        max-width: 430px;
+        margin: 70px auto 0;
+      }
+
+      .ticket {
+        grid-template-columns: 1fr;
+        padding: 20px 16px 18px;
+        border-radius: 20px;
+        background: rgba(5, 8, 20, 0.85); /* lite mer genomskinlig */
+        max-height: 520px;                /* gör kortet lägre */
+        overflow-y: auto;                 /* så man kan scrolla i kortet om det behövs */
+      }
+
+      .ticket::after {
+        display: none;
+      }
+
+      .right {
+        padding-left: 0;
+        border-top: 1px dashed rgba(255,255,255,0.22);
+        margin-top: 14px;
+        padding-top: 14px;
+      }
+
+      .ribbon {
+        top: 8px;
+        left: -55px;
+        padding-inline: 70px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 12px 8px 20px;
+      }
+      .subtitle {
+        font-size: 0.98rem;
+      }
+      .details {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="fireworks"></canvas>
+  <div class="spotlight"></div>
+
+  <div class="wrapper">
+    <div class="ticket">
+      <div class="glow-orb orb1"></div>
+      <div class="glow-orb orb2"></div>
+
+      <div class="ribbon">Mats &amp; Mia 60-årspresent</div>
+
+      <div class="left">
+        <div class="tag">
+          <span class="tag-dot"></span>
+          Mats &amp; Mia 60-årspresent
+        </div>
+        <h1>Grattis på 60-årsdagen!</h1>
+        <p class="subtitle">
+          <span class="highlight">Vi firar er med en oförglömlig kväll</span><br />
+        </p>
+
+        <p class="section-title">Kom till Stockholm och se</p>
+        <p class="details">
+          <a href="https://showtic.se/forestallningar/magnus-uggla/stockholm"
+             class="link"
+             target="_blank">
+             <strong>Magnus Uggla - 50 år på tronen</strong>
+          </a>!<br />
+          Vi firar att ni båda fyllt 60 år med musik, humor och nostalgi.<br />
+          Efter föreställningen går vi och äter middag på
+          <a href="https://www.restauranghimlen.se/"
+             class="link"
+             target="_blank">
+             Himlen
+          </a>.
+        </p>
+      </div>
+
+      <div class="right">
+        <p class="section-title">När &amp; var</p>
+        <div class="when-box">
+          <div class="when-row">
+            <div class="when-label">Datum</div>
+            <div class="when-value">13 december 2025</div>
+          </div>
+          <div class="when-row">
+            <div class="when-label">Plats</div>
+            <div class="when-value">Göta Lejon</div>
+          </div>
+          <div class="when-row">
+            <div class="when-label">Tid</div>
+            <div class="when-value">Fördrink 16:30</div>
+          </div>
+        </div>
+
+        <p class="footer">
+          Tack för alla år, alla skratt och alla minnen.<br />
+          Nu skapar vi nya!
+        </p>
+        <p class="names">
+          Grattiskramar från<br />
+          <strong>Anders, Åsa, Anna, Ann-Sofie &amp; Jonas</strong>
+        </p>
+
+        <p class="note">
+          <strong>OBS.</strong> Boka boende. Möjlighet finns för övernattning hos
+          Ann-Sofie &amp; Jonas om så önskas.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("fireworks");
+    const ctx = canvas.getContext("2d");
+
+    let w = canvas.width = window.innerWidth;
+    let h = canvas.height = window.innerHeight;
+
+    const fireworks = [];
+
+    class Firework {
+      constructor() {
+        this.x = Math.random() * w;
+        this.y = h + 10;
+        this.targetY = Math.random() * h * 0.4 + 40;
+        this.speed = 4 + Math.random() * 3;
+        this.particles = [];
+        this.exploded = false;
+        this.color = `hsl(${Math.random() * 360}, 90%, 60%)`;
+      }
+
+      update() {
+        if (!this.exploded) {
+          this.y -= this.speed;
+          if (this.y <= this.targetY) {
+            this.explode();
+          }
+        }
+        this.particles.forEach(p => p.update());
+        this.particles = this.particles.filter(p => p.alpha > 0);
+      }
+
+      explode() {
+        this.exploded = true;
+        const count = 70;
+        for (let i = 0; i < count; i++) {
+          this.particles.push(new Particle(this.x, this.y, this.color));
+        }
+      }
+
+      draw() {
+        if (!this.exploded) {
+          ctx.fillStyle = this.color;
+          ctx.fillRect(this.x - 1, this.y - 8, 2, 8);
+        }
+        this.particles.forEach(p => p.draw());
+      }
+    }
+
+    class Particle {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.angle = Math.random() * Math.PI * 2;
+        this.speed = Math.random() * 5 + 1;
+        this.alpha = 1;
+        this.decay = 0.015 + Math.random() * 0.02;
+        this.color = color;
+        this.gravity = 0.03;
+      }
+
+      update() {
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed + this.gravity;
+        this.speed *= 0.97;
+        this.alpha -= this.decay;
+      }
+
+      draw() {
+        if (this.alpha <= 0) return;
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    function loop() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
+      ctx.fillRect(0, 0, w, h);
+
+      if (Math.random() < 0.06) {
+        fireworks.push(new Firework());
+      }
+
+      fireworks.forEach(f => f.update());
+      fireworks.forEach(f => f.draw());
+
+      if (fireworks.length > 40) {
+        fireworks.splice(0, fireworks.length - 40);
+      }
+
+      requestAnimationFrame(loop);
+    }
+
+    window.addEventListener("resize", () => {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    });
+
+    loop();
+  </script>
+</body>
+</html>
